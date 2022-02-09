@@ -8,9 +8,13 @@
 import Foundation
 
 var isAppRunning = true
-var isGameRunning = true
+var StartGameRunning = true
+var GammingRunning = true
 
 func welcomeMessage(){
+    print("  ")
+    print(" @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ")
+    print("  ")
     print("-------- Welcome to \"WordGame\" --------")
     print("Your task is to quess the provided word")
     print("        -> within 6 attemp(s) <-       ")
@@ -57,43 +61,72 @@ func readLine(after message: String) -> String{
     }
 }
 
-func startGame (){
-    print("!!!!!! You have 6 attempt(s) !!!!!!")
-    gameRules()
-    let pickAWord = words.randomElement()!
+struct searchWords{
+    var systemWord: String
+    var playerWord: String
     
-    while isGameRunning == true {
-        let inputCommand = readLine(after: "Press - y to play or - n for start menu")
-            
+    init(systemWord: String, playerWord:String){
+        self.systemWord = systemWord
+        self.playerWord = playerWord
+    }
+    
+    func gameResult(){
+       print(systemWord)
+    }
+}
+
+func searchWord(){
+    let systemWord = ["Apple","Samsung","Xiaomi"]
+    let randomSystemWord:String = systemWord.randomElement()!
+    var count:Int = 0
+    print(randomSystemWord)
+    let playerWord = readLine(after: "Word")
+    
+    while count < 6 {
+        if playerWord.isEmpty == false && playerWord.count == randomSystemWord.count {
+            print("Done")
+        } else {
+            print("Word is Empty or wrong, please try again!")
+            print("\(playerWord.count) & \(randomSystemWord.count)")
+        }
+    }
+    
+    
+}
+
+func startGame (){
+    gameRules()
+    let words = ["Dani","Giorgos","Alex"]
+    let pickAWord = words.randomElement()!
+    print(pickAWord.count)
+    
+    while StartGameRunning == true {
+            let inputCommand = readLine(after: "Press - y to play or - n for start menu")
             guard let Gamecommand = gameControle.init(rawValue: inputCommand)else {
                 print ("\(inputCommand): is not found")
                 continue
             }
         switch Gamecommand {
         case .y:
-            print(pickAWord)
+            
             break
         case .n:
-            isGameRunning = false
-            print("///////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\")
-            print("-----------------------------")
+            StartGameRunning = false
             welcomeMessage()
             gameCommands()
+            break
         }
     }
-    print (pickAWord)
 }
 
 //-----> Main code here
 
 welcomeMessage()
 gameCommands()
-var words = ["Apple","Samsung"]
-
 
 while isAppRunning == true {
-let inputCommand = readLine(after: "Enter command")
     
+let inputCommand = readLine(after: "Enter command")
     guard let command = Command.init(rawValue: inputCommand)else {
         print ("\(inputCommand): is not found")
         continue
@@ -102,7 +135,7 @@ let inputCommand = readLine(after: "Enter command")
 switch command {
     
 case .s:
-    startGame()
+    searchWord()
     break
     
 case .q,.eof:
