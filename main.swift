@@ -133,7 +133,7 @@ func startGame (){
         }
         if count == 6 {
             print("")
-            print("Game Over! You have only 6 Attemps!!")
+            print("Game Over! You have only 6 Attemps!! the word was \(pickAWord)")
             print("")
             playAgain()
         }
