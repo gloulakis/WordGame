@@ -10,6 +10,11 @@ import Foundation
 var isAppRunning = true
 var StartGameRunning = true
 var GammingRunning = true
+var words = ["test"]
+let pickAWord = words.randomElement()!
+var playersWord = ""
+
+// -----> Welcome Message & Rules
 
 func welcomeMessage(){
     print("  ")
@@ -40,13 +45,13 @@ func gameRules(){
 
 //-----> Commands
 
-enum Command:String{
+enum mainCommand:String{
     case s
     case q
     case eof
 }
 
-enum gameControle:String{
+enum gameCommand:String{
     case y
     case n
 }
@@ -61,6 +66,7 @@ func readLine(after message: String) -> String{
     }
 }
 
+//------> Game
 struct searchWords{
     var systemWord: String
     var playerWord: String
@@ -75,73 +81,84 @@ struct searchWords{
     }
 }
 
-func searchWord(){
-    let systemWord = ["Apple","Samsung","Xiaomi"]
-    let randomSystemWord:String = systemWord.randomElement()!
-    var count:Int = 0
-    print(randomSystemWord)
-    let playerWord = readLine(after: "Word")
-    
-    while count < 6 {
-        if playerWord.isEmpty == false && playerWord.count == randomSystemWord.count {
-            print("Done")
-        } else {
-            print("Word is Empty or wrong, please try again!")
-            print("\(playerWord.count) & \(randomSystemWord.count)")
-        }
-    }
-    
-    
-}
-
 func startGame (){
     gameRules()
-    let words = ["Dani","Giorgos","Alex"]
-    let pickAWord = words.randomElement()!
-    print(pickAWord.count)
-    
-    while StartGameRunning == true {
-            let inputCommand = readLine(after: "Press - y to play or - n for start menu")
-            guard let Gamecommand = gameControle.init(rawValue: inputCommand)else {
+    var count = 1
+    print("Guess the word: ")
+    for _ in pickAWord {
+        print("_",terminator: " ")
+    }
+    print("")
+    print("")
+    while GammingRunning == true && count <= 6{
+        playersWord = readLine(after: " \(count) Attemp Word ")
+        let trimWord = playersWord.trimmingCharacters(in: .whitespacesAndNewlines)
+        if pickAWord.elementsEqual(trimWord) {
+                print ("You win!")
+                playAgain()
+                break
+            }
+        if playersWord.count < pickAWord.count {
+            print("The word must be \(pickAWord.count) characters please try again!")
+        }
+        if count == 6 {
+            print("")
+            print("Game Over! You have only 6 Attemps!!")
+            print("")
+            playAgain()
+        }
+        count+=1
+    }
+}
+
+func playAgain (){
+    while true {
+        let inputCommand = readLine(after: "Do you want to play again? press -y for yes or -n to main menu")
+            guard let command = gameCommand.init(rawValue: inputCommand)else {
                 print ("\(inputCommand): is not found")
                 continue
             }
-        switch Gamecommand {
+        switch command {
         case .y:
-            
-            break
+            startGame()
         case .n:
-            StartGameRunning = false
-            welcomeMessage()
             gameCommands()
+            appRunning()
             break
         }
+        break
     }
 }
 
-//-----> Main code here
+func appRunning (){
+    while isAppRunning == true {
+        
+    let inputCommand = readLine(after: "Enter command")
+        guard let command = mainCommand.init(rawValue: inputCommand)else {
+            print ("\(inputCommand): is not found")
+            continue
+        }
+        
+
+    switch command {
+        
+    case .s:
+        startGame()
+        break
+        
+    case .q,.eof:
+        isAppRunning = false
+        break
+        
+    }
+        break
+    }
+}
+
+
+
+//-----> Main
 
 welcomeMessage()
 gameCommands()
-
-while isAppRunning == true {
-    
-let inputCommand = readLine(after: "Enter command")
-    guard let command = Command.init(rawValue: inputCommand)else {
-        print ("\(inputCommand): is not found")
-        continue
-    }
-
-switch command {
-    
-case .s:
-    searchWord()
-    break
-    
-case .q,.eof:
-    isAppRunning = false
-    break
-    
-}
-}
-
+appRunning()

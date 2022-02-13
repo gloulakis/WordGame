@@ -41,6 +41,7 @@
 		CC356DF527B2EFBE00F42AE8 = {
 			isa = PBXGroup;
 			children = (
+				CC356E0127B2EFBF00F42AE8 /* main.swift */,
 				CC356E0027B2EFBF00F42AE8 /* WordGame */,
 				CC356DFF27B2EFBF00F42AE8 /* Products */,
 			);
@@ -57,7 +58,6 @@
 		CC356E0027B2EFBF00F42AE8 /* WordGame */ = {
 			isa = PBXGroup;
 			children = (
-				CC356E0127B2EFBF00F42AE8 /* main.swift */,
 			);
 			path = WordGame;
 			sourceTree = "<group>";
