@@ -10,7 +10,7 @@ import Foundation
 var isAppRunning = true
 var StartGameRunning = true
 var GammingRunning = true
-var words = ["test"]
+var words = ["Car","Orange","Ten","Five","Give"]
 let pickAWord = words.randomElement()!
 var playersWord = ""
 
@@ -84,6 +84,10 @@ struct searchWords{
 func startGame (){
     gameRules()
     var count = 1
+    let wordCounter = 1
+    var pickWordIndex:Int = 1
+    var playerWordIndex:Int = 1
+    var wordList:[Any] = []
     print("Guess the word: ")
     for _ in pickAWord {
         print("_",terminator: " ")
@@ -91,15 +95,40 @@ func startGame (){
     print("")
     print("")
     while GammingRunning == true && count <= 6{
+        wordList.removeAll()
         playersWord = readLine(after: " \(count) Attemp Word ")
         let trimWord = playersWord.trimmingCharacters(in: .whitespacesAndNewlines)
-        if pickAWord.elementsEqual(trimWord) {
+        
+        let pickWordLcased = pickAWord.lowercased()
+        let playerWordLcased = trimWord.lowercased()
+
+        if pickWordLcased.elementsEqual(playerWordLcased) {
                 print ("You win!")
                 playAgain()
                 break
             }
-        if playersWord.count < pickAWord.count {
+        if trimWord.count < pickAWord.count {
             print("The word must be \(pickAWord.count) characters please try again!")
+        }
+        if pickWordLcased != playerWordLcased && wordCounter <= pickWordLcased.count {
+            for t in playerWordLcased  {
+                for p in pickWordLcased{
+                    if p == t && pickWordIndex == playerWordIndex {
+                        wordList.append(p.uppercased())
+                        break
+                    } else if p == t && pickWordIndex != playerWordIndex {
+                        wordList.append(p.lowercased())
+                    }
+                    playerWordIndex+=1
+                }
+            }
+            wordList.append("_")
+            pickWordIndex = 0
+            playerWordIndex = 0
+            for i in 0...wordList.count-1 {
+                print ( wordList[i],terminator: "")
+            }
+            print ("")
         }
         if count == 6 {
             print("")
@@ -109,6 +138,7 @@ func startGame (){
         }
         count+=1
     }
+    
 }
 
 func playAgain (){
