@@ -107,8 +107,9 @@ func startGame (){
                 playAgain()
                 break
             }
-        if trimWord.count < pickAWord.count {
+        if trimWord.count < pickAWord.count || trimWord.count > pickAWord.count {
             print("The word must be \(pickAWord.count) characters please try again!")
+            break
         }
         if pickWordLcased != playerWordLcased && wordCounter <= pickWordLcased.count {
             for t in playerWordLcased  {
